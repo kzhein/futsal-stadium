@@ -1,0 +1,28 @@
+const openHours = [
+  { time: '12:01 - 1:00 AM', start: 1, end: 60 },
+  { time: '1:01 - 2:00 AM', start: 61, end: 120 },
+  { time: '2:01 - 3:00 AM', start: 121, end: 180 },
+  { time: '3:01 - 4:00 AM', start: 181, end: 240 },
+  { time: '4:01 - 5:00 AM', start: 241, end: 300 },
+  { time: '5:01 - 6:00 AM', start: 301, end: 360 },
+  { time: '6:01 - 7:00 AM', start: 361, end: 420 },
+  { time: '7:01 - 8:00 AM', start: 421, end: 480 },
+  { time: '8:01 - 9:00 AM', start: 481, end: 540 },
+  { time: '9:01 - 10:00 AM', start: 541, end: 600 },
+  { time: '10:01 - 11:00 AM', start: 601, end: 660 },
+  { time: '11:01 - 12:00 AM', start: 661, end: 720 },
+  { time: '12:01 - 1:00 PM', start: 721, end: 780 },
+  { time: '1:01 - 2:00 PM', start: 781, end: 840 },
+  { time: '2:01 - 3:00 PM', start: 841, end: 900 },
+  { time: '3:01 - 4:00 PM', start: 901, end: 960 },
+  { time: '4:01 - 5:00 PM', start: 961, end: 1020 },
+  { time: '5:01 - 6:00 PM', start: 1021, end: 1080 },
+  { time: '6:01 - 7:00 PM', start: 1081, end: 1140 },
+  { time: '7:01 - 8:00 PM', start: 1141, end: 1200 },
+  { time: '8:01 - 9:00 PM', start: 1201, end: 1260 },
+  { time: '9:01 - 10:00 PM', start: 1261, end: 1320 },
+  { time: '10:01 - 11:00 PM', start: 1321, end: 1380 },
+  { time: '11:01 - 12:00 PM', start: 1381, end: 1440 },
+];
+
+module.exports = openHours;
