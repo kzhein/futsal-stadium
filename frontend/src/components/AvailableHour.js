@@ -1,9 +1,10 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Col } from 'react-bootstrap';
+
 import { toggleSelectedHour } from '../actions/availableHourActions';
 
-const AvailableHour = ({ availableHour, selectSection }) => {
+const AvailableHour = ({ availableHour }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {

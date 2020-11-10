@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Row, Spinner } from 'react-bootstrap';
+
 import AvailableHour from './AvailableHour';
 
 const AvailableHours = () => {
-  const { loading, availableHours, error } = useSelector(
+  const { loading, availableHours } = useSelector(
     state => state.availableHourDetails
   );
 
@@ -19,11 +20,7 @@ const AvailableHours = () => {
         />
       ) : (
         availableHours.map(ava => (
-          <AvailableHour
-            key={ava._id}
-            // selectSection={selectSection}
-            availableHour={ava}
-          />
+          <AvailableHour key={ava._id} availableHour={ava} />
         ))
       )}
     </Row>

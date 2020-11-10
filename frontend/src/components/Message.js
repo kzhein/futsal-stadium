@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Row, Col } from 'react-bootstrap';
+
 import { removeMessage } from '../actions/messageActions';
 
 const Message = () => {
