@@ -9,6 +9,7 @@ import {
   USER_SIGNUP_SUCCESS,
   USER_SIGNUP_FAIL,
   USER_LOGOUT,
+  CLEAR_AUTH_ERROR,
 } from '../constants/userConstants';
 
 export const userAuthReducer = (
@@ -66,6 +67,11 @@ export const userAuthReducer = (
         isAuthenticated: false,
         loading: false,
         user: null,
+        error: null,
+      };
+    case CLEAR_AUTH_ERROR:
+      return {
+        ...state,
         error: null,
       };
     default:

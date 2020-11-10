@@ -4,7 +4,6 @@ import { Row, Col } from 'react-bootstrap';
 import DatePicker from '../components/DatePicker';
 import Fab from '../components/Fab';
 import AvailableHours from '../components/AvailableHours';
-import availableHours from '../availableHours';
 
 const HomeScreen = () => {
   const { availableHours } = useSelector(state => state.availableHourDetails);

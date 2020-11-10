@@ -10,6 +10,7 @@ import {
   USER_SIGNUP_SUCCESS,
   USER_SIGNUP_FAIL,
   USER_LOGOUT,
+  CLEAR_AUTH_ERROR,
 } from '../constants/userConstants';
 
 export const loadUser = () => async (dispatch, getState) => {
@@ -116,4 +117,8 @@ export const signup = values => async dispatch => {
 export const logout = () => dispatch => {
   localStorage.removeItem('token');
   dispatch({ type: USER_LOGOUT });
+};
+
+export const clearAuthError = () => dispatch => {
+  dispatch({ type: CLEAR_AUTH_ERROR });
 };

@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Form, Button, Spinner, Row, Col } from 'react-bootstrap';
-import { login } from '../actions/userActions';
+import { login, clearAuthError } from '../actions/userActions';
+import { setMessage } from '../actions/messageActions';
 
 const LoginScreen = ({ location, history }) => {
   const dispatch = useDispatch();
 
-  const { isAuthenticated, loading } = useSelector(state => state.userAuth);
+  const { isAuthenticated, loading, error } = useSelector(
+    state => state.userAuth
+  );
   const { handleSubmit, register, errors } = useForm();
   const { from } = location.state || { from: { pathname: '/' } };
 
@@ -16,6 +19,13 @@ const LoginScreen = ({ location, history }) => {
       history.push(from.pathname);
     }
   }, [isAuthenticated, history]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setMessage({ text: error, type: 'danger' }));
+      dispatch(clearAuthError());
+    }
+  }, [error]);
 
   const onSubmit = values => dispatch(login(values));
 

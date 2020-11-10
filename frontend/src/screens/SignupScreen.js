@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
-import { signup } from '../actions/userActions';
+import { signup, clearAuthError } from '../actions/userActions';
+import { setMessage } from '../actions/messageActions';
 
 const SignupScreen = ({ history }) => {
   const dispatch = useDispatch();
 
-  const { isAuthenticated, loading } = useSelector(state => state.userAuth);
+  const { isAuthenticated, loading, error } = useSelector(
+    state => state.userAuth
+  );
   const { handleSubmit, register, errors, getValues } = useForm();
 
   useEffect(() => {
@@ -15,6 +18,13 @@ const SignupScreen = ({ history }) => {
       history.push('/');
     }
   }, [isAuthenticated, history]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setMessage({ text: error, type: 'danger' }));
+      dispatch(clearAuthError());
+    }
+  }, [error]);
 
   const onSubmit = values => dispatch(signup(values));
 
