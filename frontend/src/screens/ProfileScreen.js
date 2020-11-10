@@ -1,42 +1,55 @@
-import React from 'react';
-import { Form, Button, Row, Col, ListGroup } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Button, Row, Col, ListGroup, Spinner } from 'react-bootstrap';
+
+import { getUserBookings } from '../actions/bookingActions';
+import formatDate from '../utils/formatDate';
 
 const ProfileScreen = () => {
+  const dispatch = useDispatch();
+
+  const { loading, bookings } = useSelector(state => state.userBookings);
+
+  useEffect(() => {
+    dispatch(getUserBookings());
+  }, []);
+
   return (
     <Row className='mt-3'>
       <Col md={6} className='mb-4'>
         <h3 className='text-center'>Your Bookings</h3>
         <ListGroup variant='flush' className='text-center'>
-          <ListGroup.Item>
-            <Row>
-              <Col>24/10/2020 5:00 - 6:00 PM</Col>
-              <Col>Confirmed</Col>
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Row>
-              <Col>24/10/2020 5:00 - 6:00 PM</Col>
-              <Col>Confirmed</Col>
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Row>
-              <Col>24/10/2020 5:00 - 6:00 PM</Col>
-              <Col>Confirmed</Col>
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Row>
-              <Col>24/10/2020 5:00 - 6:00 PM</Col>
-              <Col>Confirmed</Col>
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Row>
-              <Col>24/10/2020 5:00 - 6:00 PM</Col>
-              <Col>Confirmed</Col>
-            </Row>
-          </ListGroup.Item>
+          {loading ? (
+            <Spinner
+              animation='grow'
+              variant='primary'
+              style={{ width: '50px', height: '50px' }}
+              className='mx-auto my-5'
+            />
+          ) : bookings.length === 0 ? (
+            <p>You have no bookings</p>
+          ) : (
+            bookings.map(booking => (
+              <ListGroup.Item>
+                <Row>
+                  <Col>{`${formatDate(new Date(booking.date))} ${
+                    booking.time.time
+                  }`}</Col>
+                  <Col>
+                    <span
+                      className={
+                        booking.status === 'pending'
+                          ? 'text-warning'
+                          : 'text-success'
+                      }
+                    >
+                      {booking.status}
+                    </span>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            ))
+          )}
         </ListGroup>
       </Col>
       <Col md={6} className='mb-4'>

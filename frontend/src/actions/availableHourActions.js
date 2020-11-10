@@ -24,7 +24,10 @@ export const getAvailableHours = date => async dispatch => {
   } catch (error) {
     dispatch({
       type: AVAILABLE_HOUR_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

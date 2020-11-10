@@ -3,6 +3,9 @@ import {
   BOOKING_CREATE_SUCCESS,
   BOOKING_CREATE_FAIL,
   BOOKING_STATUS_RESET,
+  USER_BOOKINGS_REQUEST,
+  USER_BOOKINGS_SUCCESS,
+  USER_BOOKINGS_FAIL,
 } from '../constants/bookingConstants';
 
 export const newBookingReducer = (
@@ -37,6 +40,38 @@ export const newBookingReducer = (
         loading: false,
         success: null,
         error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userBookingsReducer = (
+  state = {
+    loading: false,
+    bookings: [],
+    error: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case USER_BOOKINGS_REQUEST:
+      return {
+        loading: true,
+        bookings: [],
+        error: null,
+      };
+    case USER_BOOKINGS_SUCCESS:
+      return {
+        loading: false,
+        bookings: action.payload,
+        error: null,
+      };
+    case USER_BOOKINGS_FAIL:
+      return {
+        loading: false,
+        bookings: [],
+        error: action.payload,
       };
     default:
       return state;

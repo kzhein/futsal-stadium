@@ -78,7 +78,10 @@ export const login = values => async dispatch => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -109,7 +112,10 @@ export const signup = values => async dispatch => {
   } catch (error) {
     dispatch({
       type: USER_SIGNUP_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

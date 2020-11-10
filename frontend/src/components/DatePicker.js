@@ -6,9 +6,7 @@ import {
   getAvailableHours,
   setDate as setAvaDate,
 } from '../actions/availableHourActions';
-
-const formatDate = date =>
-  `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+import formatDate from '../utils/formatDate';
 
 const DatePicker = () => {
   const [date, setDate] = useState(new Date());
