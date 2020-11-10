@@ -1,5 +1,12 @@
+.navbar-toggler:focus {
+  outline: none;
+}
+
 .react-calendar {
   margin: 1rem auto;
+  border: 0.01px solid rgba(16, 36, 94, 0.1) !important;
+  border-radius: 4px;
+  box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
 }
 
 .available-hour {
