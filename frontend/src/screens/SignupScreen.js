@@ -73,6 +73,23 @@ const SignupScreen = ({ history }) => {
               )}
             </Form.Group>
 
+            <Form.Group controlId='phone'>
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type='number'
+                name='phone'
+                placeholder='Phone Number'
+                ref={register({
+                  required: 'Phone number is required',
+                })}
+              />
+              {errors.phone && (
+                <Form.Text className='text-danger'>
+                  {errors.phone.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+
             <Form.Group controlId='password'>
               <Form.Label>Password</Form.Label>
               <Form.Control
