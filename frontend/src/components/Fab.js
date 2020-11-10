@@ -17,6 +17,7 @@ const Fab = ({ showFab }) => {
     state => state.availableHourDetails
   );
   const { loading, success, error } = useSelector(state => state.newBooking);
+  const { isAuthenticated } = useSelector(state => state.userAuth);
 
   const animation = useSpring({
     opacity: showFab ? 1 : 0,
@@ -24,11 +25,15 @@ const Fab = ({ showFab }) => {
   });
 
   const handleSubmit = () => {
-    if (!loading) {
-      const hoursToOrder = availableHours
-        .filter(ava => ava.selected)
-        .map(ava => ava._id);
-      dispatch(createNewBooking(hoursToOrder));
+    if (isAuthenticated) {
+      if (!loading) {
+        const hoursToOrder = availableHours
+          .filter(ava => ava.selected)
+          .map(ava => ava._id);
+        dispatch(createNewBooking(hoursToOrder));
+      }
+    } else {
+      dispatch(setMessage({ text: 'Please log in to book', type: 'warning' }));
     }
   };
 
