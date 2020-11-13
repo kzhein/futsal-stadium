@@ -10,6 +10,13 @@ import {
   USER_SIGNUP_FAIL,
   USER_LOGOUT,
   CLEAR_AUTH_ERROR,
+  CLEAR_AUTH_SUCCESS,
+  USER_DETAILS_UPDATE_REQUEST,
+  USER_DETAILS_UPDATE_SUCCESS,
+  USER_DETAILS_UPDATE_FAIL,
+  USER_PASSWORD_UPDATE_REQUEST,
+  USER_PASSWORD_UPDATE_SUCCESS,
+  USER_PASSWORD_UPDATE_FAIL,
 } from '../constants/userConstants';
 
 export const userAuthReducer = (
@@ -18,6 +25,7 @@ export const userAuthReducer = (
     isAuthenticated: false,
     loading: true,
     user: null,
+    success: null,
     error: null,
   },
   action
@@ -31,7 +39,28 @@ export const userAuthReducer = (
         isAuthenticated: false,
         loading: true,
         user: null,
+        success: null,
         error: null,
+      };
+    case USER_PASSWORD_UPDATE_REQUEST:
+    case USER_DETAILS_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case USER_DETAILS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload.user,
+        success: action.payload.success,
+      };
+    case USER_PASSWORD_UPDATE_FAIL:
+    case USER_DETAILS_UPDATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     case USER_LOAD_SUCCESS:
       return {
@@ -52,6 +81,7 @@ export const userAuthReducer = (
         user: null,
         error: action.payload,
       };
+    case USER_PASSWORD_UPDATE_SUCCESS:
     case USER_SIGNUP_SUCCESS:
     case USER_LOGIN_SUCCESS:
       return {
@@ -59,6 +89,7 @@ export const userAuthReducer = (
         isAuthenticated: true,
         loading: false,
         user: action.payload.user,
+        success: action.payload.success,
         error: null,
       };
     case USER_LOGOUT:
@@ -73,6 +104,11 @@ export const userAuthReducer = (
       return {
         ...state,
         error: null,
+      };
+    case CLEAR_AUTH_SUCCESS:
+      return {
+        ...state,
+        success: null,
       };
     default:
       return state;

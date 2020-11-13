@@ -11,6 +11,13 @@ import {
   USER_SIGNUP_FAIL,
   USER_LOGOUT,
   CLEAR_AUTH_ERROR,
+  CLEAR_AUTH_SUCCESS,
+  USER_DETAILS_UPDATE_REQUEST,
+  USER_DETAILS_UPDATE_SUCCESS,
+  USER_DETAILS_UPDATE_FAIL,
+  USER_PASSWORD_UPDATE_REQUEST,
+  USER_PASSWORD_UPDATE_SUCCESS,
+  USER_PASSWORD_UPDATE_FAIL,
 } from '../constants/userConstants';
 
 export const loadUser = () => async (dispatch, getState) => {
@@ -125,6 +132,89 @@ export const logout = () => dispatch => {
   dispatch({ type: USER_LOGOUT });
 };
 
+export const updateUserDetails = details => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DETAILS_UPDATE_REQUEST });
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const {
+      data: {
+        data: { user },
+      },
+    } = await axios.patch('/api/v1/users/updateMe', details, config);
+
+    dispatch({
+      type: USER_DETAILS_UPDATE_SUCCESS,
+      payload: { user, success: 'User updated successfully' },
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DETAILS_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserPassword = values => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_PASSWORD_UPDATE_REQUEST });
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const {
+      data: {
+        token: newToken,
+        data: { user },
+      },
+    } = await axios.patch('/api/v1/users/updateMyPassword', values, config);
+
+    dispatch({
+      type: USER_PASSWORD_UPDATE_SUCCESS,
+      payload: {
+        token: newToken,
+        user,
+        success: 'User password updated successfully',
+      },
+    });
+
+    localStorage.setItem('token', newToken);
+  } catch (error) {
+    dispatch({
+      type: USER_PASSWORD_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const clearAuthError = () => dispatch => {
   dispatch({ type: CLEAR_AUTH_ERROR });
+};
+
+export const clearAuthSuccess = () => dispatch => {
+  dispatch({ type: CLEAR_AUTH_SUCCESS });
 };
