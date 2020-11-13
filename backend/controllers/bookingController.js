@@ -96,7 +96,13 @@ exports.getBooking = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyBookings = catchAsync(async (req, res, next) => {
-  const bookings = await Booking.find({ user: req.user.id });
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const bookings = await Booking.find({
+    user: req.user.id,
+    date: { $gte: today },
+  });
 
   res.status(200).json({
     status: 'success',
