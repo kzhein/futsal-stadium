@@ -43,6 +43,7 @@ const Fab = ({ showFab }) => {
       dispatch(getAvailableHours(date));
       dispatch(resetBookingStatus());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success]);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const Fab = ({ showFab }) => {
       dispatch(getAvailableHours(date));
       dispatch(resetBookingStatus());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

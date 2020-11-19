@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Form, Button, Spinner } from 'react-bootstrap';
@@ -30,7 +30,7 @@ const UserPasswordUpdate = () => {
       dispatch(setMessage({ text: error, type: 'danger' }));
       dispatch(clearAuthError());
     }
-  }, [success, error]);
+  }, [success, error, dispatch, reset]);
 
   const onSubmit = values => dispatch(updateUserPassword(values));
 

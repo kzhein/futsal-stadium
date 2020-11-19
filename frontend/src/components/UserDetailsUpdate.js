@@ -29,7 +29,7 @@ const UserDetailsUpdate = () => {
       dispatch(setMessage({ text: error, type: 'danger' }));
       dispatch(clearAuthError());
     }
-  }, [success, error]);
+  }, [success, error, dispatch]);
 
   const onSubmit = values => dispatch(updateUserDetails(values));
 

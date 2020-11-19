@@ -1,14 +1,20 @@
 const express = require('express');
-const dayController = require('../controllers/dayController');
-const authController = require('../controllers/authController');
+const {
+  getDayWithAvailable,
+  getAllDays,
+  getDay,
+  updateDay,
+} = require('../controllers/dayController');
+const { protect, restrictTo } = require('../controllers/authController');
 
 const router = express.Router();
 
-router.get('/available', dayController.getDayWithAvailable);
+router.get('/available', getDayWithAvailable);
 
-router.use(authController.protect, authController.restrictTo('admin'));
-
-router.route('/').get(dayController.getAllDays);
-router.route('/:id').get(dayController.getDay).patch(dayController.updateDay);
+router.route('/').get(protect, restrictTo('admin'), getAllDays);
+router
+  .route('/:id')
+  .get(protect, restrictTo('admin'), getDay)
+  .patch(protect, restrictTo('admin'), updateDay);
 
 module.exports = router;

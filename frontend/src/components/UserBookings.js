@@ -12,7 +12,7 @@ const UserBookings = () => {
 
   useEffect(() => {
     dispatch(getUserBookings());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

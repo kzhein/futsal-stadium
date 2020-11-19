@@ -14,6 +14,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const dayRouter = require('./routes/dayRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const userRouter = require('./routes/userRoutes');
+const openHourRouter = require('./routes/openHourRoutes');
 
 const app = express();
 
@@ -78,6 +79,7 @@ app.use(compression());
 app.use('/api/v1/days', dayRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/openhours', openHourRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));

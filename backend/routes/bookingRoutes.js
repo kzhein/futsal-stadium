@@ -1,22 +1,27 @@
 const express = require('express');
-const bookingController = require('../controllers/bookingController');
-const authController = require('../controllers/authController');
+const {
+  getMyBookings,
+  createBooking,
+  getAllBookings,
+  getBooking,
+  updateBooking,
+  deleteBooking,
+} = require('../controllers/bookingController');
+const { protect, restrictTo } = require('../controllers/authController');
 
 const router = express.Router();
 
-router.use(authController.protect);
+router.get('/getMyBookings', protect, getMyBookings);
 
-router.get('/getMyBookings', bookingController.getMyBookings);
-router.post('/', bookingController.createBooking);
-
-router.use(authController.restrictTo('admin'));
-
-router.get('/', bookingController.getAllBookings);
+router
+  .route('/')
+  .get(protect, restrictTo('admin'), getAllBookings)
+  .post(protect, createBooking);
 
 router
   .route('/:id')
-  .get(bookingController.getBooking)
-  .patch(bookingController.updateBooking)
-  .delete(bookingController.deleteBooking);
+  .get(protect, restrictTo('admin'), getBooking)
+  .patch(protect, restrictTo('admin'), updateBooking)
+  .delete(protect, restrictTo('admin'), deleteBooking);
 
 module.exports = router;

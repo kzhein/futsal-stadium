@@ -10,15 +10,18 @@ import ProfileScreen from './screens/ProfileScreen';
 import ConfirmBookingScreen from './screens/ConfirmBookingScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
+import DaysListScreen from './screens/DaysListScreen';
 import PrivateRoute from './components/routing/PrivateRoute';
+import RestrictRoute from './components/routing/RestrictRoute';
 import { loadUser } from './actions/userActions';
+import DayEditScreen from './screens/DayEditScreen';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
@@ -34,6 +37,17 @@ const App = () => {
           />
           <Route path='/login' component={LoginScreen} />
           <Route path='/signup' component={SignupScreen} />
+          <RestrictRoute
+            path='/admin/days'
+            component={DaysListScreen}
+            allowed={['admin']}
+            exact
+          />
+          <RestrictRoute
+            path='/admin/days/:id/edit'
+            component={DayEditScreen}
+            allowed={['admin']}
+          />
         </Container>
       </div>
     </Router>

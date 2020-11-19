@@ -1,13 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logout } from '../actions/userActions';
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { isAuthenticated } = useSelector(state => state.userAuth);
+  const { isAuthenticated, user } = useSelector(state => state.userAuth);
+
+  const isAdmin = user && user.role === 'admin';
 
   return (
     <div>
@@ -21,6 +23,13 @@ const Header = () => {
             <Nav className='ml-auto'>
               {isAuthenticated ? (
                 <>
+                  {isAdmin && (
+                    <NavDropdown title='Manage' id='manage'>
+                      <LinkContainer to='/admin/days'>
+                        <NavDropdown.Item>Days</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  )}
                   <LinkContainer to='/profile'>
                     <Nav.Link>Profile</Nav.Link>
                   </LinkContainer>

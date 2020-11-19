@@ -19,14 +19,14 @@ const LoginScreen = ({ location, history }) => {
     if (isAuthenticated) {
       history.push(from.pathname);
     }
-  }, [isAuthenticated, history]);
+  }, [isAuthenticated, history, from.pathname]);
 
   useEffect(() => {
     if (error) {
       dispatch(setMessage({ text: error, type: 'danger' }));
       dispatch(clearAuthError());
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   const onSubmit = values => dispatch(login(values));
 

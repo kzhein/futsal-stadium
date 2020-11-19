@@ -25,7 +25,7 @@ const SignupScreen = ({ history }) => {
       dispatch(setMessage({ text: error, type: 'danger' }));
       dispatch(clearAuthError());
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   const onSubmit = values => dispatch(signup(values));
 

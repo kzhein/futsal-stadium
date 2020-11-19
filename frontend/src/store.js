@@ -8,6 +8,7 @@ import {
   userBookingsReducer,
 } from './reducers/bookingReducers';
 import { messageReducer } from './reducers/messageReducers';
+import { dayReducer } from './reducers/dayReducers';
 
 const reducer = combineReducers({
   availableHourDetails: availableHourReducer,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   newBooking: newBookingReducer,
   userBookings: userBookingsReducer,
   message: messageReducer,
+  dayDetails: dayReducer,
 });
 
 const middleware = [thunk];

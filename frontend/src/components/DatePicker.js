@@ -18,7 +18,7 @@ const DatePicker = () => {
     const formattedDate = formatDate(date);
     dispatch(setAvaDate(formattedDate));
     dispatch(getAvailableHours(formattedDate));
-  }, [date]);
+  }, [date, dispatch]);
 
   return (
     <div>
