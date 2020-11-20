@@ -3,10 +3,15 @@ import { useSelector } from 'react-redux';
 import { Row, Spinner } from 'react-bootstrap';
 
 import AvailableHour from './AvailableHour';
+import compareAvailableHour from '../utils/compareAvailableHour';
 
 const AvailableHours = () => {
-  const { loading, availableHours } = useSelector(
+  const { loading, availableHours, date } = useSelector(
     state => state.availableHourDetails
+  );
+
+  const availableHoursRemaining = availableHours.filter(ava =>
+    compareAvailableHour(date, ava.start)
   );
 
   return (
@@ -18,8 +23,10 @@ const AvailableHours = () => {
           style={{ width: '50px', height: '50px' }}
           className='mx-auto my-5'
         />
+      ) : availableHoursRemaining.length === 0 ? (
+        <p className='mx-auto'>There is no section available today</p>
       ) : (
-        availableHours.map(ava => (
+        availableHoursRemaining.map(ava => (
           <AvailableHour key={ava._id} availableHour={ava} />
         ))
       )}
