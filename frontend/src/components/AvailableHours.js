@@ -10,7 +10,7 @@ const AvailableHours = () => {
   );
 
   return (
-    <Row className='mt-3'>
+    <Row>
       {loading ? (
         <Spinner
           animation='grow'

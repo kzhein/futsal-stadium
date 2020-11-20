@@ -16,7 +16,13 @@ const Header = () => {
       <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>Futsal Stadium</Navbar.Brand>
+            <Navbar.Brand className='d-flex align-items-center'>
+              <i
+                className='far fa-futbol mr-1'
+                style={{ fontSize: '40px' }}
+              ></i>{' '}
+              <span style={{ fontSize: '30px' }}>Futsal</span>
+            </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -27,6 +33,9 @@ const Header = () => {
                     <NavDropdown title='Manage' id='manage'>
                       <LinkContainer to='/admin/days'>
                         <NavDropdown.Item>Days</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/bookings'>
+                        <NavDropdown.Item>Bookings</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   )}

@@ -6,6 +6,9 @@ import { userAuthReducer } from './reducers/userReducers';
 import {
   newBookingReducer,
   userBookingsReducer,
+  allBookingsReducer,
+  bookingApproveReducer,
+  bookingDeleteReducer,
 } from './reducers/bookingReducers';
 import { messageReducer } from './reducers/messageReducers';
 import { dayReducer } from './reducers/dayReducers';
@@ -15,6 +18,9 @@ const reducer = combineReducers({
   userAuth: userAuthReducer,
   newBooking: newBookingReducer,
   userBookings: userBookingsReducer,
+  allBookings: allBookingsReducer,
+  bookingApprove: bookingApproveReducer,
+  bookingDelete: bookingDeleteReducer,
   message: messageReducer,
   dayDetails: dayReducer,
 });

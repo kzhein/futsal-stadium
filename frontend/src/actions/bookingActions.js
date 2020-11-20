@@ -7,6 +7,18 @@ import {
   USER_BOOKINGS_REQUEST,
   USER_BOOKINGS_SUCCESS,
   USER_BOOKINGS_FAIL,
+  BOOKING_ALL_REQUEST,
+  BOOKING_ALL_SUCCESS,
+  BOOKING_ALL_FAIL,
+  BOOKING_APPROVE_REQUEST,
+  BOOKING_APPROVE_SUCCESS,
+  BOOKING_APPROVE_FAIL,
+  BOOKING_APPROVE_RESET,
+  BOOKING_ALL_RESET,
+  BOOKING_DELETE_REQUEST,
+  BOOKING_DELETE_SUCCESS,
+  BOOKING_DELETE_FAIL,
+  BOOKING_DELETE_RESET,
 } from '../constants/bookingConstants';
 
 export const createNewBooking = newBookings => async (dispatch, getState) => {
@@ -87,4 +99,126 @@ export const getUserBookings = () => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const getAllBookings = (perPage, currentPage) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: BOOKING_ALL_REQUEST });
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const {
+      data: {
+        allTotal,
+        data: { bookings },
+      },
+    } = await axios.get(
+      `/api/v1/bookings?limit=${perPage}&page=${currentPage}`,
+      config
+    );
+
+    dispatch({
+      type: BOOKING_ALL_SUCCESS,
+      payload: { bookings, allTotal },
+    });
+  } catch (error) {
+    dispatch({
+      type: BOOKING_ALL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const resetAllBookings = () => dispatch => {
+  dispatch({ type: BOOKING_ALL_RESET });
+};
+
+export const approveBooking = id => async (dispatch, getState) => {
+  try {
+    dispatch({ type: BOOKING_APPROVE_REQUEST, payload: id });
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    await axios.patch(
+      `/api/v1/bookings/${id}`,
+      { status: 'confirmed' },
+      config
+    );
+
+    dispatch({
+      type: BOOKING_APPROVE_SUCCESS,
+      payload: 'Booking approved successfully.',
+    });
+  } catch (error) {
+    dispatch({
+      type: BOOKING_APPROVE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const resetBookingApprove = () => dispatch => {
+  dispatch({ type: BOOKING_APPROVE_RESET });
+};
+
+export const deleteBooking = id => async (dispatch, getState) => {
+  try {
+    dispatch({ type: BOOKING_DELETE_REQUEST, payload: id });
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    await axios.delete(`/api/v1/bookings/${id}`, config);
+
+    dispatch({
+      type: BOOKING_DELETE_SUCCESS,
+      payload: 'Booking deleted successfully.',
+    });
+  } catch (error) {
+    dispatch({
+      type: BOOKING_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const resetBookingDelete = () => dispatch => {
+  dispatch({ type: BOOKING_DELETE_RESET });
 };

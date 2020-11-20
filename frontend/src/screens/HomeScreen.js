@@ -16,6 +16,7 @@ const HomeScreen = () => {
         <DatePicker />
       </Col>
       <Col md={7} lg={8} xl={9}>
+        <h3 className='text-center mt-3'>Pick the sections</h3>
         <AvailableHours />
       </Col>
 

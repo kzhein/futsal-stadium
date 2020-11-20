@@ -31,9 +31,7 @@ const UserBookings = () => {
           bookings.map(booking => (
             <ListGroup.Item key={booking._id}>
               <Row>
-                <Col>{`${formatDate(new Date(booking.date))} ${
-                  booking.time.time
-                }`}</Col>
+                <Col>{`${formatDate(booking.date)} ${booking.time.time}`}</Col>
                 <Col>
                   <span
                     className={

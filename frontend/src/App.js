@@ -15,6 +15,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import RestrictRoute from './components/routing/RestrictRoute';
 import { loadUser } from './actions/userActions';
 import DayEditScreen from './screens/DayEditScreen';
+import BookingsListScreen from './screens/BookingsListScreen';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,12 @@ const App = () => {
             path='/admin/days/:id/edit'
             component={DayEditScreen}
             allowed={['admin']}
+          />
+          <RestrictRoute
+            path='/admin/bookings'
+            component={BookingsListScreen}
+            allowed={['admin']}
+            exact
           />
         </Container>
       </div>

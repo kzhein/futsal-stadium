@@ -11,11 +11,14 @@ exports.getAllBookings = catchAsync(async (req, res, next) => {
     .sort()
     .limitFields()
     .paginate();
+
   const bookings = await features.query;
+  const allTotal = await Booking.estimatedDocumentCount();
 
   res.status(200).json({
     status: 'success',
     total: bookings.length,
+    allTotal,
     data: {
       bookings,
     },
