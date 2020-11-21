@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Row, Spinner } from 'react-bootstrap';
 
 import AvailableHour from './AvailableHour';
-import compareAvailableHour from '../utils/compareAvailableHour';
+import hasNotPassedTheCurrentTime from '../utils/hasNotPassedTheCurrentTime';
 
 const AvailableHours = () => {
   const { loading, availableHours, date } = useSelector(
@@ -11,7 +11,7 @@ const AvailableHours = () => {
   );
 
   const availableHoursRemaining = availableHours.filter(ava =>
-    compareAvailableHour(date, ava.start)
+    hasNotPassedTheCurrentTime(date, ava.start)
   );
 
   return (

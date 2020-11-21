@@ -1,9 +1,11 @@
 const Booking = require('../models/bookingModel');
 const Day = require('../models/dayModel');
+const OpenHour = require('../models/openHourModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const getDay = require('../utils/getDay');
+const hasNotPassedTheCurrentTime = require('../utils/hasNotPassedTheCurrentTime');
 
 exports.getAllBookings = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Booking.find(), req.query)
@@ -48,14 +50,38 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     return next(new AppError('You are entering an old date', 400));
   }
 
-  // check the section user trying to book is valid
+  // check the section user trying to book is included in the day
   const dayToBook = await Day.findOne({ day: getDay(date) });
 
+  let included = true;
   req.body.time.forEach(time => {
     if (!dayToBook.openHours.find(oh => `${oh._id}` === time)) {
-      return next(new AppError('Invalid section of the day', 400));
+      included = false;
     }
   });
+  if (!included) {
+    return next(new AppError('Invalid section of the day', 400));
+  }
+
+  // check the section user trying to book is already passed the current time
+  const hasNotPassedPromises = req.body.time.map(async time => {
+    const openHour = await OpenHour.findById(time);
+    return {
+      openHour,
+      hasNotPassed: hasNotPassedTheCurrentTime(req.body.date, openHour.start),
+    };
+  });
+  const hasNotPassed = await Promise.all(hasNotPassedPromises);
+
+  const passedTime = hasNotPassed.find(hnp => hnp.hasNotPassed === false);
+  if (passedTime) {
+    return next(
+      new AppError(
+        `${passedTime.openHour.time} has already passed the current time`,
+        400
+      )
+    );
+  }
 
   // check if any of the section has already been booked
   const isBookedPromises = req.body.time.map(async time => {
@@ -64,7 +90,9 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   });
   const booked = await Promise.all(isBookedPromises);
   if (booked[0]) {
-    return next(new AppError(`${booked[0].time.time} is not available`, 400));
+    return next(
+      new AppError(`${booked[0].time.time} has already been booked.`, 400)
+    );
   }
 
   // create bookings
