@@ -1,11 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Col } from 'react-bootstrap';
+import { animated, useSpring } from 'react-spring';
 
 import { toggleSelectedHour } from '../actions/availableHourActions';
 
 const AvailableHour = ({ availableHour }) => {
   const dispatch = useDispatch();
+
+  const animation = useSpring({
+    opacity: availableHour.selected ? 1 : 0,
+    transform: availableHour.selected ? 'translateX(0)' : 'translateX(100%)',
+    width: availableHour.selected ? 10 : 0,
+  });
 
   const handleClick = () => {
     if (!availableHour.booked) {
@@ -24,7 +31,7 @@ const AvailableHour = ({ availableHour }) => {
         }`}
       >
         {availableHour.booked ? 'Booked' : availableHour.time}
-        {availableHour.selected && <i className='fas fa-check ml-1' />}
+        <animated.i style={animation} className='fas fa-check ml-1' />
       </div>
     </Col>
   );
