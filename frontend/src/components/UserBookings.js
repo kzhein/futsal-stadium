@@ -3,16 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Spinner } from 'react-bootstrap';
 
 import formatDate from '../utils/formatDate';
-import { getUserBookings } from '../actions/bookingActions';
+import { getUserBookings, resetUserBookings } from '../actions/bookingActions';
+import { setMessage } from '../actions/messageActions';
 
 const UserBookings = () => {
   const dispatch = useDispatch();
 
-  const { loading, bookings } = useSelector(state => state.userBookings);
+  const { loading, bookings, error } = useSelector(state => state.userBookings);
 
   useEffect(() => {
     dispatch(getUserBookings());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setMessage({ text: error, type: 'danger' }));
+      dispatch(resetUserBookings());
+    }
+  }, [error, dispatch]);
 
   return (
     <>

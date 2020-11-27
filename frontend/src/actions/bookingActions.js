@@ -19,7 +19,9 @@ import {
   BOOKING_DELETE_SUCCESS,
   BOOKING_DELETE_FAIL,
   BOOKING_DELETE_RESET,
+  USER_BOOKINGS_RESET,
 } from '../constants/bookingConstants';
+import { USER_LOGOUT } from '../constants/userConstants';
 
 export const createNewBooking = newBookings => async (dispatch, getState) => {
   try {
@@ -98,7 +100,16 @@ export const getUserBookings = () => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+
+    if (error.response.status === 401) {
+      localStorage.removeItem('token');
+      dispatch({ type: USER_LOGOUT });
+    }
   }
+};
+
+export const resetUserBookings = () => dispatch => {
+  dispatch({ type: USER_BOOKINGS_RESET });
 };
 
 export const getAllBookings = (perPage, currentPage) => async (

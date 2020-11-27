@@ -18,6 +18,7 @@ import {
   BOOKING_DELETE_SUCCESS,
   BOOKING_DELETE_FAIL,
   BOOKING_DELETE_RESET,
+  USER_BOOKINGS_RESET,
 } from '../constants/bookingConstants';
 
 export const newBookingReducer = (
@@ -84,6 +85,12 @@ export const userBookingsReducer = (
         loading: false,
         bookings: [],
         error: action.payload,
+      };
+    case USER_BOOKINGS_RESET:
+      return {
+        loading: false,
+        bookings: [],
+        error: null,
       };
     default:
       return state;
