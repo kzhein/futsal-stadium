@@ -18,6 +18,7 @@ import {
   USER_PASSWORD_UPDATE_REQUEST,
   USER_PASSWORD_UPDATE_SUCCESS,
   USER_PASSWORD_UPDATE_FAIL,
+  USER_LOAD_DONE,
 } from '../constants/userConstants';
 
 export const loadUser = () => async (dispatch, getState) => {
@@ -45,10 +46,10 @@ export const loadUser = () => async (dispatch, getState) => {
       },
     } = await axios.get('/api/v1/users/me', config);
 
-    // dispatch USER_LOGIN_SUCCESS action first to make PrivateRoute and RestrictRoute work
+    // dispatch USER_LOAD_DONE action first to make PrivateRoute and RestrictRoute work
     dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: { token, user },
+      type: USER_LOAD_DONE,
+      payload: user,
     });
     dispatch({ type: USER_LOAD_SUCCESS });
   } catch (error) {

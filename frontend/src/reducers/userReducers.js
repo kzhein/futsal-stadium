@@ -17,6 +17,7 @@ import {
   USER_PASSWORD_UPDATE_REQUEST,
   USER_PASSWORD_UPDATE_SUCCESS,
   USER_PASSWORD_UPDATE_FAIL,
+  USER_LOAD_DONE,
 } from '../constants/userConstants';
 
 export const userAuthReducer = (
@@ -70,6 +71,12 @@ export const userAuthReducer = (
         loading: false,
         user: null,
         error: action.payload,
+      };
+    case USER_LOAD_DONE:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload,
       };
     case USER_PASSWORD_UPDATE_SUCCESS:
     case USER_SIGNUP_SUCCESS:
