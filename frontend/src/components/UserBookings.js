@@ -9,11 +9,14 @@ import { setMessage } from '../actions/messageActions';
 const UserBookings = () => {
   const dispatch = useDispatch();
 
+  const { isAuthenticated } = useSelector(state => state.userAuth);
   const { loading, bookings, error } = useSelector(state => state.userBookings);
 
   useEffect(() => {
-    dispatch(getUserBookings());
-  }, [dispatch]);
+    if (isAuthenticated) {
+      dispatch(getUserBookings());
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     if (error) {
