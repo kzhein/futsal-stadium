@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { availableHourReducer } from './reducers/availableHourReducers';
-import { userAuthReducer } from './reducers/userReducers';
+import { userAuthReducer, userLoadReducer } from './reducers/userReducers';
 import {
   newBookingReducer,
   userBookingsReducer,
@@ -16,6 +16,7 @@ import { dayReducer } from './reducers/dayReducers';
 const reducer = combineReducers({
   availableHourDetails: availableHourReducer,
   userAuth: userAuthReducer,
+  userLoad: userLoadReducer,
   newBooking: newBookingReducer,
   userBookings: userBookingsReducer,
   allBookings: allBookingsReducer,

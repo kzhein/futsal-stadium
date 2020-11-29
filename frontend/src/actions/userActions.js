@@ -29,7 +29,7 @@ export const loadUser = () => async (dispatch, getState) => {
     } = getState();
 
     if (!token) {
-      throw new Error();
+      throw new Error('There is no token');
     }
 
     const config = {
@@ -45,7 +45,12 @@ export const loadUser = () => async (dispatch, getState) => {
       },
     } = await axios.get('/api/v1/users/me', config);
 
-    dispatch({ type: USER_LOAD_SUCCESS, payload: user });
+    // dispatch USER_LOGIN_SUCCESS action first to make PrivateRoute and RestrictRoute work
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: { token, user },
+    });
+    dispatch({ type: USER_LOAD_SUCCESS });
   } catch (error) {
     localStorage.removeItem('token');
 

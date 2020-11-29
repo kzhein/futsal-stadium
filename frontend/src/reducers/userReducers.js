@@ -23,7 +23,7 @@ export const userAuthReducer = (
   state = {
     token: localStorage.getItem('token'),
     isAuthenticated: false,
-    loading: true,
+    loading: false,
     user: null,
     success: null,
     error: null,
@@ -33,7 +33,6 @@ export const userAuthReducer = (
   switch (action.type) {
     case USER_SIGNUP_REQUEST:
     case USER_LOGIN_REQUEST:
-    case USER_LOAD_REQUEST:
       return {
         ...state,
         isAuthenticated: false,
@@ -62,17 +61,8 @@ export const userAuthReducer = (
         loading: false,
         error: action.payload,
       };
-    case USER_LOAD_SUCCESS:
-      return {
-        ...state,
-        isAuthenticated: true,
-        loading: false,
-        user: action.payload,
-        error: null,
-      };
     case USER_SIGNUP_FAIL:
     case USER_LOGIN_FAIL:
-    case USER_LOAD_FAIL:
       return {
         ...state,
         token: null,
@@ -109,6 +99,38 @@ export const userAuthReducer = (
       return {
         ...state,
         success: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userLoadReducer = (
+  state = {
+    loading: true,
+    success: null,
+    error: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case USER_LOAD_REQUEST:
+      return {
+        loading: true,
+        success: null,
+        error: null,
+      };
+    case USER_LOAD_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        error: null,
+      };
+    case USER_LOAD_FAIL:
+      return {
+        loading: false,
+        success: null,
+        error: action.payload,
       };
     default:
       return state;
