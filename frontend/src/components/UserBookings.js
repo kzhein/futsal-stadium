@@ -5,12 +5,17 @@ import { Row, Col, ListGroup, Spinner } from 'react-bootstrap';
 import formatDate from '../utils/formatDate';
 import { getUserBookings, resetUserBookings } from '../actions/bookingActions';
 import { setMessage } from '../actions/messageActions';
+import hasNotPassedTheCurrentTime from '../utils/hasNotPassedTheCurrentTime';
 
 const UserBookings = () => {
   const dispatch = useDispatch();
 
   const { isAuthenticated } = useSelector(state => state.userAuth);
   const { loading, bookings, error } = useSelector(state => state.userBookings);
+
+  const bookingsRemaining = bookings.filter(bk =>
+    hasNotPassedTheCurrentTime(bk.date, bk.time.start)
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -36,10 +41,10 @@ const UserBookings = () => {
             style={{ width: '50px', height: '50px' }}
             className='mx-auto my-5'
           />
-        ) : bookings.length === 0 ? (
+        ) : bookingsRemaining.length === 0 ? (
           <p>You have no bookings</p>
         ) : (
-          bookings.map(booking => (
+          bookingsRemaining.map(booking => (
             <ListGroup.Item key={booking._id}>
               <Row>
                 <Col>{`${formatDate(booking.date)} ${booking.time.time}`}</Col>
