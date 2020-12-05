@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { animated, useSpring } from 'react-spring';
 
-import {
-  createNewBooking,
-  resetBookingStatus,
-} from '../actions/bookingActions';
+import { createNewBooking } from '../actions/bookingActions';
 import { getAvailableHours } from '../actions/availableHourActions';
 import { setMessage } from '../actions/messageActions';
 
@@ -39,21 +36,13 @@ const Fab = ({ showFab }) => {
 
   useEffect(() => {
     if (success) {
-      dispatch(setMessage({ text: success, type: 'success' }));
       dispatch(getAvailableHours(date));
-      dispatch(resetBookingStatus());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success]);
-
-  useEffect(() => {
     if (error) {
-      dispatch(setMessage({ text: error, type: 'danger' }));
       dispatch(getAvailableHours(date));
-      dispatch(resetBookingStatus());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error]);
+  }, [success, error]);
 
   return (
     <animated.div

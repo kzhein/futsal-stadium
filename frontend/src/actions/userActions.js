@@ -19,6 +19,7 @@ import {
   USER_PASSWORD_UPDATE_SUCCESS,
   USER_PASSWORD_UPDATE_FAIL,
   USER_LOAD_DONE,
+  USER_LOAD_RESET,
 } from '../constants/userConstants';
 
 export const loadUser = () => async (dispatch, getState) => {
@@ -62,6 +63,7 @@ export const loadUser = () => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: USER_LOAD_RESET });
   }
 };
 
@@ -96,6 +98,7 @@ export const login = values => async dispatch => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_AUTH_ERROR });
   }
 };
 
@@ -130,6 +133,7 @@ export const signup = values => async dispatch => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_AUTH_ERROR });
   }
 };
 
@@ -163,6 +167,7 @@ export const updateUserDetails = details => async (dispatch, getState) => {
       type: USER_DETAILS_UPDATE_SUCCESS,
       payload: { user, success: 'User updated successfully' },
     });
+    dispatch({ type: CLEAR_AUTH_SUCCESS });
   } catch (error) {
     dispatch({
       type: USER_DETAILS_UPDATE_FAIL,
@@ -171,6 +176,7 @@ export const updateUserDetails = details => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_AUTH_ERROR });
   }
 };
 
@@ -204,6 +210,7 @@ export const updateUserPassword = values => async (dispatch, getState) => {
         success: 'User password updated successfully',
       },
     });
+    dispatch({ type: CLEAR_AUTH_SUCCESS });
 
     localStorage.setItem('token', newToken);
   } catch (error) {
@@ -214,13 +221,6 @@ export const updateUserPassword = values => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_AUTH_ERROR });
   }
-};
-
-export const clearAuthError = () => dispatch => {
-  dispatch({ type: CLEAR_AUTH_ERROR });
-};
-
-export const clearAuthSuccess = () => dispatch => {
-  dispatch({ type: CLEAR_AUTH_SUCCESS });
 };

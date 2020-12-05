@@ -52,6 +52,7 @@ export const createNewBooking = newBookings => async (dispatch, getState) => {
       type: BOOKING_CREATE_SUCCESS,
       payload: 'Booking created successfully',
     });
+    dispatch({ type: BOOKING_STATUS_RESET });
   } catch (error) {
     dispatch({
       type: BOOKING_CREATE_FAIL,
@@ -60,11 +61,8 @@ export const createNewBooking = newBookings => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: BOOKING_STATUS_RESET });
   }
-};
-
-export const resetBookingStatus = () => dispatch => {
-  dispatch({ type: BOOKING_STATUS_RESET });
 };
 
 export const getUserBookings = () => async (dispatch, getState) => {
@@ -92,6 +90,7 @@ export const getUserBookings = () => async (dispatch, getState) => {
       type: USER_BOOKINGS_SUCCESS,
       payload: bookings,
     });
+    dispatch({ type: USER_BOOKINGS_RESET });
   } catch (error) {
     dispatch({
       type: USER_BOOKINGS_FAIL,
@@ -100,16 +99,13 @@ export const getUserBookings = () => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: USER_BOOKINGS_RESET });
 
     if (error.response.status === 401) {
       localStorage.removeItem('token');
       dispatch({ type: USER_LOGOUT });
     }
   }
-};
-
-export const resetUserBookings = () => dispatch => {
-  dispatch({ type: USER_BOOKINGS_RESET });
 };
 
 export const getAllBookings = (perPage, currentPage) => async (
@@ -152,11 +148,8 @@ export const getAllBookings = (perPage, currentPage) => async (
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: BOOKING_ALL_RESET });
   }
-};
-
-export const resetAllBookings = () => dispatch => {
-  dispatch({ type: BOOKING_ALL_RESET });
 };
 
 export const approveBooking = id => async (dispatch, getState) => {
@@ -184,6 +177,7 @@ export const approveBooking = id => async (dispatch, getState) => {
       type: BOOKING_APPROVE_SUCCESS,
       payload: 'Booking approved successfully.',
     });
+    dispatch({ type: BOOKING_APPROVE_RESET });
   } catch (error) {
     dispatch({
       type: BOOKING_APPROVE_FAIL,
@@ -192,11 +186,8 @@ export const approveBooking = id => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: BOOKING_APPROVE_RESET });
   }
-};
-
-export const resetBookingApprove = () => dispatch => {
-  dispatch({ type: BOOKING_APPROVE_RESET });
 };
 
 export const deleteBooking = id => async (dispatch, getState) => {
@@ -219,6 +210,7 @@ export const deleteBooking = id => async (dispatch, getState) => {
       type: BOOKING_DELETE_SUCCESS,
       payload: 'Booking deleted successfully.',
     });
+    dispatch({ type: BOOKING_DELETE_RESET });
   } catch (error) {
     dispatch({
       type: BOOKING_DELETE_FAIL,
@@ -227,9 +219,6 @@ export const deleteBooking = id => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: BOOKING_DELETE_RESET });
   }
-};
-
-export const resetBookingDelete = () => dispatch => {
-  dispatch({ type: BOOKING_DELETE_RESET });
 };

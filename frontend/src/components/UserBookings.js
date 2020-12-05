@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Spinner } from 'react-bootstrap';
 
 import formatDate from '../utils/formatDate';
-import { getUserBookings, resetUserBookings } from '../actions/bookingActions';
-import { setMessage } from '../actions/messageActions';
+import { getUserBookings } from '../actions/bookingActions';
 import hasNotPassedTheCurrentTime from '../utils/hasNotPassedTheCurrentTime';
 
 const UserBookings = () => {
   const dispatch = useDispatch();
 
   const { isAuthenticated } = useSelector(state => state.userAuth);
-  const { loading, bookings, error } = useSelector(state => state.userBookings);
+  const { loading, bookings } = useSelector(state => state.userBookings);
 
   const bookingsRemaining = bookings.filter(bk =>
     hasNotPassedTheCurrentTime(bk.date, bk.time.start)
@@ -22,13 +21,6 @@ const UserBookings = () => {
       dispatch(getUserBookings());
     }
   }, [dispatch, isAuthenticated]);
-
-  useEffect(() => {
-    if (error) {
-      dispatch(setMessage({ text: error, type: 'danger' }));
-      dispatch(resetUserBookings());
-    }
-  }, [error, dispatch]);
 
   return (
     <>

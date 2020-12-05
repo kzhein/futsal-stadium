@@ -3,38 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import {
-  getDay,
-  updateDay,
-  clearDayError,
-  clearDaySuccess,
-} from '../actions/dayActions';
-import { setMessage } from '../actions/messageActions';
+import { getDay, updateDay } from '../actions/dayActions';
 
 const DayEditScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const [openHours, setOpenHours] = useState([]);
-  const { day, loading, error, success } = useSelector(
-    state => state.dayDetails
-  );
+  const { day, loading } = useSelector(state => state.dayDetails);
   const { token } = useSelector(state => state.userAuth);
 
   const showLoading = loading || openHours.length === 0;
 
   const id = match.params.id;
-
-  useEffect(() => {
-    if (success) {
-      dispatch(setMessage({ text: success, type: 'success' }));
-      dispatch(clearDaySuccess());
-    }
-
-    if (error) {
-      dispatch(setMessage({ text: error, type: 'danger' }));
-      dispatch(clearDayError());
-    }
-  }, [success, error, dispatch]);
 
   useEffect(() => {
     dispatch(getDay(id));

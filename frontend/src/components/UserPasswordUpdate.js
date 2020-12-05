@@ -3,34 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Form, Button, Spinner } from 'react-bootstrap';
 
-import {
-  updateUserPassword,
-  clearAuthSuccess,
-  clearAuthError,
-} from '../actions/userActions';
-import { setMessage } from '../actions/messageActions';
+import { updateUserPassword } from '../actions/userActions';
 
 const UserPasswordUpdate = () => {
   const dispatch = useDispatch();
 
-  const { loading, success, error } = useSelector(state => state.userAuth);
+  const { loading, success } = useSelector(state => state.userAuth);
 
   const { handleSubmit, register, errors, getValues, reset } = useForm();
 
   useEffect(() => {
     if (success) {
-      dispatch(setMessage({ text: success, type: 'success' }));
-      dispatch(clearAuthSuccess());
-
       // reset form after success
       reset();
     }
-
-    if (error) {
-      dispatch(setMessage({ text: error, type: 'danger' }));
-      dispatch(clearAuthError());
-    }
-  }, [success, error, dispatch, reset]);
+  }, [success, reset]);
 
   const onSubmit = values => dispatch(updateUserPassword(values));
 

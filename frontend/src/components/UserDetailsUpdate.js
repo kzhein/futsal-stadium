@@ -1,35 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Form, Button, Spinner } from 'react-bootstrap';
 
-import {
-  updateUserDetails,
-  clearAuthSuccess,
-  clearAuthError,
-} from '../actions/userActions';
-import { setMessage } from '../actions/messageActions';
+import { updateUserDetails } from '../actions/userActions';
 
 const UserDetailsUpdate = () => {
   const dispatch = useDispatch();
 
-  const { user, loading, success, error } = useSelector(
-    state => state.userAuth
-  );
+  const { user, loading } = useSelector(state => state.userAuth);
 
   const { handleSubmit, register, errors } = useForm();
-
-  useEffect(() => {
-    if (success) {
-      dispatch(setMessage({ text: success, type: 'success' }));
-      dispatch(clearAuthSuccess());
-    }
-
-    if (error) {
-      dispatch(setMessage({ text: error, type: 'danger' }));
-      dispatch(clearAuthError());
-    }
-  }, [success, error, dispatch]);
 
   const onSubmit = values => dispatch(updateUserDetails(values));
 

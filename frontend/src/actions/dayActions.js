@@ -45,6 +45,7 @@ export const getAllDays = () => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_DAY_ERROR });
   }
 };
 
@@ -80,6 +81,7 @@ export const getDay = id => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_DAY_ERROR });
   }
 };
 
@@ -107,6 +109,7 @@ export const updateDay = openHours => async (dispatch, getState) => {
       type: DAY_UPDATE_SUCCESS,
       payload: { day: data.day, success: 'Day updated successfully' },
     });
+    dispatch({ type: CLEAR_DAY_SUCCESS });
   } catch (error) {
     dispatch({
       type: DAY_UPDATE_FAIL,
@@ -115,13 +118,6 @@ export const updateDay = openHours => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message,
     });
+    dispatch({ type: CLEAR_DAY_ERROR });
   }
-};
-
-export const clearDayError = () => dispatch => {
-  dispatch({ type: CLEAR_DAY_ERROR });
-};
-
-export const clearDaySuccess = () => dispatch => {
-  dispatch({ type: CLEAR_DAY_SUCCESS });
 };

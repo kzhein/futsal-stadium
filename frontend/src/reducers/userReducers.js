@@ -18,6 +18,7 @@ import {
   USER_PASSWORD_UPDATE_SUCCESS,
   USER_PASSWORD_UPDATE_FAIL,
   USER_LOAD_DONE,
+  USER_LOAD_RESET,
 } from '../constants/userConstants';
 
 export const userAuthReducer = (
@@ -138,6 +139,12 @@ export const userLoadReducer = (
         loading: false,
         success: null,
         error: action.payload,
+      };
+    case USER_LOAD_RESET:
+      return {
+        loading: false,
+        success: null,
+        error: null,
       };
     default:
       return state;

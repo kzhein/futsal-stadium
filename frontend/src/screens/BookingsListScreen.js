@@ -4,25 +4,18 @@ import ReactPaginate from 'react-paginate';
 import { Button, Container, Form, Spinner, Table } from 'react-bootstrap';
 import {
   getAllBookings,
-  resetAllBookings,
   approveBooking,
-  resetBookingApprove,
   deleteBooking,
-  resetBookingDelete,
 } from '../actions/bookingActions';
-import { setMessage } from '../actions/messageActions';
 import formatDate from '../utils/formatDate';
 import getDay from '../utils/getDay';
 
 const BookingsListScreen = () => {
   const dispatch = useDispatch();
 
-  const {
-    loading: loadingGetBookings,
-    bookings,
-    allTotal,
-    error: errorGetBookings,
-  } = useSelector(state => state.allBookings);
+  const { loading: loadingGetBookings, bookings, allTotal } = useSelector(
+    state => state.allBookings
+  );
 
   const {
     bookingId: bookingToApprove,
@@ -47,40 +40,25 @@ const BookingsListScreen = () => {
 
   useEffect(() => {
     if (successApproveBooking) {
-      dispatch(setMessage({ text: successApproveBooking, type: 'success' }));
       dispatch(getAllBookings(perPage, currentPage));
-      dispatch(resetBookingApprove());
     }
 
     if (errorApproveBooking) {
-      dispatch(setMessage({ text: errorApproveBooking, type: 'danger' }));
       dispatch(getAllBookings(perPage, currentPage));
-      dispatch(resetBookingApprove());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successApproveBooking, errorApproveBooking, dispatch]);
 
   useEffect(() => {
     if (successDeleteBooking) {
-      dispatch(setMessage({ text: successDeleteBooking, type: 'success' }));
       dispatch(getAllBookings(perPage, currentPage));
-      dispatch(resetBookingDelete());
     }
 
     if (errorDeleteBooking) {
-      dispatch(setMessage({ text: errorDeleteBooking, type: 'danger' }));
       dispatch(getAllBookings(perPage, currentPage));
-      dispatch(resetBookingDelete());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successDeleteBooking, errorDeleteBooking, dispatch]);
-
-  useEffect(() => {
-    if (errorGetBookings) {
-      dispatch(setMessage({ text: errorGetBookings, type: 'danger' }));
-      dispatch(resetAllBookings());
-    }
-  }, [errorGetBookings, dispatch]);
 
   const handlePageClick = data => {
     setCurrentPage(data.selected + 1);
