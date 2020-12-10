@@ -1,0 +1,38 @@
+.navbar-toggler:focus {
+  outline: none;
+}
+
+.react-calendar {
+  margin: 1rem auto;
+  border: 0.01px solid rgba(16, 36, 94, 0.1) !important;
+  border-radius: 4px;
+  box-shadow: 0 30px 40px rgba(16, 36, 94, 0.2);
+}
+
+.available-hour {
+  width: 120px;
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  border-radius: 100px;
+}
+
+.fab {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  text-align: center;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab i {
+  line-height: 70px;
+  font-size: 2rem;
+}

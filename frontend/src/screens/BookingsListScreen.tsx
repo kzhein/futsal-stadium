@@ -1,0 +1,203 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ReactPaginate from 'react-paginate';
+import { Button, Container, Form, Spinner, Table } from 'react-bootstrap';
+import {
+  getAllBookings,
+  approveBooking,
+  deleteBooking,
+} from '../actions/bookingActions';
+import formatDate from '../utils/formatDate';
+import getDay from '../utils/getDay';
+import { RootStore } from '../store';
+
+const BookingsListScreen = () => {
+  const dispatch = useDispatch();
+
+  const { loading: loadingGetBookings, bookings, allTotal } = useSelector(
+    (state: RootStore) => state.allBookings
+  );
+
+  const {
+    bookingId: bookingToApprove,
+    loading: loadingApproveBooking,
+    error: errorApproveBooking,
+    success: successApproveBooking,
+  } = useSelector((state: RootStore) => state.bookingApprove);
+
+  const {
+    bookingId: bookingToDelete,
+    loading: loadingDeleteBooking,
+    error: errorDeleteBooking,
+    success: successDeleteBooking,
+  } = useSelector((state: RootStore) => state.bookingDelete);
+
+  const [perPage, setPerPage] = useState<number>(50);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    dispatch(getAllBookings(perPage, currentPage));
+  }, [dispatch, perPage, currentPage]);
+
+  useEffect(() => {
+    if (successApproveBooking) {
+      dispatch(getAllBookings(perPage, currentPage));
+    }
+
+    if (errorApproveBooking) {
+      dispatch(getAllBookings(perPage, currentPage));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successApproveBooking, errorApproveBooking, dispatch]);
+
+  useEffect(() => {
+    if (successDeleteBooking) {
+      dispatch(getAllBookings(perPage, currentPage));
+    }
+
+    if (errorDeleteBooking) {
+      dispatch(getAllBookings(perPage, currentPage));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successDeleteBooking, errorDeleteBooking, dispatch]);
+
+  const handlePageClick = (data: { selected: number }) => {
+    setCurrentPage(data.selected + 1);
+  };
+
+  const handleApprove = (id: string) => {
+    if (window.confirm('Approve this booking?')) {
+      dispatch(approveBooking(id));
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Delete this booking?')) {
+      dispatch(deleteBooking(id));
+    }
+  };
+
+  return (
+    <Container className='py-3'>
+      <h3 className='text-center mb-3'>Manage bookings</h3>
+      <Form.Group controlId='perPage' className='float-right'>
+        <Form.Label>Per page</Form.Label>
+        <Form.Control
+          as='select'
+          size='sm'
+          value={perPage}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPerPage(((e.target.value as unknown) as number) * 1)
+          }
+        >
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+          <option value={150}>150</option>
+        </Form.Control>
+      </Form.Group>
+      {loadingGetBookings ? (
+        <Spinner
+          animation='border'
+          variant='primary'
+          style={{ width: '50px', height: '50px' }}
+          className='d-block mx-auto my-5'
+        />
+      ) : (
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((booking, index) => (
+              <tr key={booking._id}>
+                <td>{index + 1}</td>
+                <td>
+                  {booking.user.name} ({booking.user.email})
+                </td>
+                <td>
+                  {formatDate(booking.date)} ({getDay(booking.date)})
+                </td>
+                <td>{booking.time.time}</td>
+                <td>{booking.status}</td>
+                <td>
+                  {booking.status === 'pending' && (
+                    <Button
+                      variant='success'
+                      size='sm'
+                      className='mr-1 mb-1'
+                      onClick={() => handleApprove(booking._id)}
+                      disabled={
+                        loadingApproveBooking &&
+                        bookingToApprove === booking._id
+                      }
+                    >
+                      {loadingApproveBooking &&
+                      bookingToApprove === booking._id ? (
+                        <Spinner
+                          as='span'
+                          animation='border'
+                          size='sm'
+                          role='status'
+                          aria-hidden='true'
+                        />
+                      ) : (
+                        <i className='fas fa-check-circle'></i>
+                      )}
+                    </Button>
+                  )}
+
+                  <Button
+                    variant='danger'
+                    size='sm'
+                    onClick={() => handleDelete(booking._id)}
+                    disabled={
+                      loadingDeleteBooking && bookingToDelete === booking._id
+                    }
+                  >
+                    {loadingDeleteBooking && bookingToDelete === booking._id ? (
+                      <Spinner
+                        as='span'
+                        animation='border'
+                        size='sm'
+                        role='status'
+                        aria-hidden='true'
+                      />
+                    ) : (
+                      <i className='fas fa-trash'></i>
+                    )}
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+      <ReactPaginate
+        pageCount={Math.ceil(allTotal / perPage)}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        onPageChange={handlePageClick}
+        initialPage={currentPage - 1}
+        containerClassName='pagination justify-content-sm-center overflow-auto'
+        pageClassName='page-item'
+        pageLinkClassName='page-link'
+        activeClassName='active'
+        previousClassName='page-item'
+        previousLinkClassName='page-link'
+        nextClassName='page-item'
+        nextLinkClassName='page-link'
+        breakClassName='page-item'
+        breakLinkClassName='page-link'
+      />
+    </Container>
+  );
+};
+
+export default BookingsListScreen;
