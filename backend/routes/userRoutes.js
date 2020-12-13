@@ -7,10 +7,12 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  addPushToken,
 } = require('../controllers/userController');
 const {
   signup,
   login,
+  logout,
   forgotPassword,
   resetPassword,
   updatePassword,
@@ -31,6 +33,8 @@ router.use(protect);
 router.patch('/updateMyPassword', updatePassword);
 router.get('/me', getMe, getUser);
 router.patch('/updateMe', updateMe);
+router.post('/addPushToken', addPushToken);
+router.patch('/logout', logout);
 
 router.use(restrictTo('admin'));
 

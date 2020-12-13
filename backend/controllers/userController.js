@@ -127,3 +127,21 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.addPushToken = catchAsync(async (req, res, next) => {
+  if (!req.user.pushTokens.includes(req.body.pushToken)) {
+    const pushTokens = [...req.user.pushTokens, req.body.pushToken];
+    await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        pushTokens,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  }
+
+  res.status(200).json('success');
+});

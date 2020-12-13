@@ -6,6 +6,7 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const getDay = require('../utils/getDay');
 const hasNotPassedTheCurrentTime = require('../utils/hasNotPassedTheCurrentTime');
+const sendNotifications = require('../utils/sendNotifications');
 
 exports.getAllBookings = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Booking.find(), req.query)
@@ -152,6 +153,12 @@ exports.updateBooking = catchAsync(async (req, res, next) => {
   if (!booking) {
     return next(new AppError('No booking found with that ID', 404));
   }
+
+  // Notify User
+  sendNotifications(booking.user, {
+    title: 'Success!',
+    body: `${booking.user.name}, your booking has been approved! 🎉`,
+  });
 
   res.status(200).json({
     status: 'success',
