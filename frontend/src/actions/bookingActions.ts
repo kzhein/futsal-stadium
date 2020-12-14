@@ -62,10 +62,9 @@ export const createNewBooking = (
   } catch (error) {
     dispatch({
       type: BOOKING_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: BOOKING_STATUS_RESET });
   }
@@ -110,14 +109,13 @@ export const getUserBookings = (): AppThunk<
   } catch (error) {
     dispatch({
       type: USER_BOOKINGS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: USER_BOOKINGS_RESET });
 
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       localStorage.removeItem('token');
       dispatch({ type: USER_LOGOUT });
     }
@@ -166,10 +164,9 @@ export const getAllBookings = (
   } catch (error) {
     dispatch({
       type: BOOKING_ALL_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: BOOKING_ALL_RESET });
   }
@@ -206,10 +203,9 @@ export const approveBooking = (
   } catch (error) {
     dispatch({
       type: BOOKING_APPROVE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: BOOKING_APPROVE_RESET });
   }
@@ -241,10 +237,9 @@ export const deleteBooking = (
   } catch (error) {
     dispatch({
       type: BOOKING_DELETE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: BOOKING_DELETE_RESET });
   }

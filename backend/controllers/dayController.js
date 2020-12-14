@@ -45,7 +45,6 @@ exports.getDayWithAvailable = catchAsync(async (req, res, next) => {
     };
   });
   const availableHours = await Promise.all(availableHoursPromises);
-  console.log(availableHours);
 
   return res.status(200).json({
     status: 'success',

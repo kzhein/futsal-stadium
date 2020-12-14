@@ -38,10 +38,9 @@ export const getAvailableHours = (
   } catch (error) {
     dispatch({
       type: AVAILABLE_HOUR_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
   }
 };

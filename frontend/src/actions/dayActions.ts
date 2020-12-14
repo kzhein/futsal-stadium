@@ -52,10 +52,9 @@ export const getAllDays = (): AppThunk<DayDispatchTypes> => async (
   } catch (error) {
     dispatch({
       type: DAY_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: CLEAR_DAY_ERROR });
   }
@@ -97,10 +96,9 @@ export const getDay = (id: string): AppThunk<DayDispatchTypes> => async (
   } catch (error) {
     dispatch({
       type: DAY_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: CLEAR_DAY_ERROR });
   }
@@ -146,10 +144,9 @@ export const updateDay = (
   } catch (error) {
     dispatch({
       type: DAY_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data?.message
+        ? error.response.data.message
+        : error.message,
     });
     dispatch({ type: CLEAR_DAY_ERROR });
   }

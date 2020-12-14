@@ -34,7 +34,7 @@ const sendNotifications = async (user, message) => {
       (accu, chunk) => [...accu, ...chunk],
       []
     );
-
+    // console.log(tickets);
     // Possible tickets
     // [
     //   {
