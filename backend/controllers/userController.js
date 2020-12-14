@@ -30,11 +30,9 @@ exports.getMe = (req, res, next) => {
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new AppError(
-        'This route is not for password updates. Please use /updateMyPassword.',
-        400
-      )
+    throw new AppError(
+      'This route is not for password updates. Please use /updateMyPassword.',
+      400
     );
   }
 
@@ -66,7 +64,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(new AppError('No user found with that ID', 404));
+    throw new AppError('No user found with that ID', 404);
   }
 
   res.status(200).json({
@@ -104,7 +102,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(new AppError('No user found with that ID', 404));
+    throw new AppError('No user found with that ID', 404);
   }
 
   res.status(200).json({
@@ -119,7 +117,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
 
   if (!user) {
-    return next(new AppError('No user found with that ID', 404));
+    throw new AppError('No user found with that ID', 404);
   }
 
   res.status(204).json({

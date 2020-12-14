@@ -20,7 +20,7 @@ exports.getDay = catchAsync(async (req, res, next) => {
   const day = await Day.findById(req.params.id);
 
   if (!day) {
-    return next(new AppError('No day found with that ID', 404));
+    throw new AppError('No day found with that ID', 404);
   }
 
   res.status(200).json({
@@ -62,7 +62,7 @@ exports.updateDay = catchAsync(async (req, res, next) => {
   });
 
   if (!day) {
-    return next(new AppError('No day found with that ID', 404));
+    throw new AppError('No day found with that ID', 404);
   }
 
   res.status(200).json({

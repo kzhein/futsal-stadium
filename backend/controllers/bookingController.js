@@ -33,14 +33,12 @@ exports.createBooking = catchAsync(async (req, res, next) => {
 
   // check if no date
   if (!req.body.date) {
-    return next(new AppError('Date is required to book', 400));
+    throw new AppError('Date is required to book', 400);
   }
 
   // check if no section
   if (!req.body.time || req.body.time.length === 0) {
-    return next(
-      new AppError('You need to choose at least one section to book', 400)
-    );
+    throw new AppError('You need to choose at least one section to book', 400);
   }
 
   // check if old date
@@ -48,7 +46,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   now.setHours(0, 0, 0, 0);
 
   if (now > date) {
-    return next(new AppError('You are entering an old date', 400));
+    throw new AppError('You are entering an old date', 400);
   }
 
   // check the section user trying to book is included in the day
@@ -61,7 +59,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     }
   });
   if (!included) {
-    return next(new AppError('Invalid section of the day', 400));
+    throw new AppError('Invalid section of the day', 400);
   }
 
   // check the section user trying to book is already passed the current time
@@ -76,11 +74,9 @@ exports.createBooking = catchAsync(async (req, res, next) => {
 
   const passedTime = hasNotPassed.find(hnp => hnp.hasNotPassed === false);
   if (passedTime) {
-    return next(
-      new AppError(
-        `${passedTime.openHour.time} has already passed the current time`,
-        400
-      )
+    throw new AppError(
+      `${passedTime.openHour.time} has already passed the current time`,
+      400
     );
   }
 
@@ -91,9 +87,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   });
   const booked = await Promise.all(isBookedPromises);
   if (booked[0]) {
-    return next(
-      new AppError(`${booked[0].time.time} has already been booked.`, 400)
-    );
+    throw new AppError(`${booked[0].time.time} has already been booked.`, 400);
   }
 
   // create bookings
@@ -116,7 +110,7 @@ exports.getBooking = catchAsync(async (req, res, next) => {
   const booking = await Booking.findById(req.params.id);
 
   if (!booking) {
-    return next(new AppError('No booking found with that ID', 404));
+    throw new AppError('No booking found with that ID', 404);
   }
 
   res.status(200).json({
@@ -151,7 +145,7 @@ exports.updateBooking = catchAsync(async (req, res, next) => {
   });
 
   if (!booking) {
-    return next(new AppError('No booking found with that ID', 404));
+    throw new AppError('No booking found with that ID', 404);
   }
 
   // Notify User
@@ -172,7 +166,7 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
   const booking = await Booking.findByIdAndDelete(req.params.id);
 
   if (!booking) {
-    return next(new AppError('No booking found with that ID', 404));
+    throw new AppError('No booking found with that ID', 404);
   }
 
   res.status(204).json({
