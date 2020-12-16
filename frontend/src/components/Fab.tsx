@@ -25,7 +25,7 @@ const Fab: React.FC<FabProps> = ({ showFab }) => {
 
   const animation = useSpring({
     opacity: showFab ? 1 : 0,
-    transform: showFab ? 'translateY(0)' : 'translateY(100%)',
+    transform: showFab ? 'translateY(0) scale(1)' : 'translateY(100%) scale(0)',
   });
 
   const handleSubmit = () => {
